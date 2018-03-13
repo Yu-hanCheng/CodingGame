@@ -3,7 +3,7 @@
 #define QLEN 10
 extern int ultra_val[3];
 int motor_c[4];
-int IPCServer(void)
+void IPCServer(char motor_pinback[9])
 {
 	int    fd, clifd, size, len, err, rval, rc, come_in;
 	struct sockaddr_un un,from;
@@ -35,41 +35,36 @@ int IPCServer(void)
 		len = sizeof(un);
 		if ((clifd = accept(fd, (struct sockaddr *)&un, &len)) < 0){
 			printf("accept<0\n");
-			return(-1);     /* often errno=EINTR, if signal caught */
+			break;
 		}else{
 			come_in=1;
 			printf("UNIX domain socket accepted\n");
 			if((rc=read(clifd,buff,sizeof(buff))) > 0) {
-	      		printf("read %u bytes: %.*s\n", rc,rc, buff);
-	      		char *delim = ",";
+				printf("read %u bytes: %.*s\n", rc,rc, buff);
+				char *delim = ",";
 				char * pch;
 				pch = strtok(buff,delim);
 				pch = strtok(NULL,"}");
 				sscanf(pch,"\"msg\":[%d,%d,%d]}",ultra_val,ultra_val+1,ultra_val+2);
 				printf("ultra_value=[%d,%d,%d]\n",ultra_val[0],ultra_val[1],ultra_val[2]);
-				int *p_motor_callback;
-				char *send_motor_callback;
-				send_motor_callback= usercode();
-				for (int i = 0; i < 10; ++i)
-				{
-					printf( "motor_pin[%d]=%d\n", i, *(send_motor_callback + i));
-				}
-	      		if (send(clifd, send_motor_callback,21, 0) == -1) {
+				printf("motor_pinback %s\n",motor_pinback);
+
+				if (send(clifd, motor_pinback,21, 0) == -1) {
 					perror("sendback error");
 					close(clifd);
 				}
-	    	}else if (rc == 0) {
-		      printf("EOF\n");
-		      goto errout;
-    		}
+			}else if (rc == 0) {
+				printf("EOF\n");
+				goto errout;
+			}
+			close(clifd);
+			break;
 		}
 		if (rc == -1) {
-	      perror("read error");
-	      exit(-1);
+			perror("read error");
+			exit(-1);
 		}
 	}
-errout:
+	errout:
 	close(clifd);
-	printf("errout\n");
-	return(rval);	
 }

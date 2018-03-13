@@ -9,7 +9,7 @@ var clients=[0,0,0,0,0];
 motor={Name:'motor_dir',msg:{direct:'right',angle:90}};
 // main
 function init(){
-  setInterval(IPC,3000);
+  setInterval(IPC,300);
   websocket();
 }
 //********** global var ************
@@ -33,7 +33,7 @@ function IPC(){
 
   u_client.on('data', (chunk) => { 
     var chunkres_pin = chunk.toString().split("\0");
-    console.log("recved from IPCServer"+chunkres_pin[0]); 
+    console.log("recved from IPCServer: "+chunkres_pin[0]); 
     motor=MTOA.Motor_to_Angle(chunkres_pin[0],chunkres_pin[1]);
     console.log(motor); 
   });
@@ -44,7 +44,6 @@ function IPC(){
     
   u_client.end();
   u_client.on('end', function(err) {
-    console.log("Enddd: " + err);
   });
 }
 
@@ -74,7 +73,6 @@ function websocket(){
             ultra_value.msg=data.msg;
             var msg_tocar = JSON.stringify(motor);
             clients[index].sendUTF(msg_tocar);
-            console.log("in server readultra and sent motor back");
             console.log(msg_tocar); 
         }else if(data.Name === "des"){ // log and broadcast the message
             position[0]=data.msg;    
@@ -84,7 +82,7 @@ function websocket(){
               if(err) { return console.log("write file error"); }
             });
             const child = require('child_process').exec;
-            var cmdString = 'pkill -f ser2; gcc -g newcode.c usercode.c IPCServer.c -o ser2; pm2 start ser2 ;';
+            var cmdString = 'pkill -f ser2; gcc -g newcode.c usercode.c IPCServer.c -o ser2; ./ser2 ;'; //pm2 start 
             child(cmdString, (err, stdout, stderr) => {
               console.log(stdout);
             });
@@ -92,9 +90,8 @@ function websocket(){
         }
       }//if (message.type === 'utf8')
     });
-    // user disconnected
     connection.on('close', function(connection) {
-      return console.log(connection);
+      return ;
     });
   });
 }

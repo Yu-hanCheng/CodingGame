@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-int IPCServer();
-int* usercode();
-char*  loop();
+void IPCServer(char motor_pinback[9]);
+void usercode();
  
