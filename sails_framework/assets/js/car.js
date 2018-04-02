@@ -171,9 +171,9 @@ function Sense_distance(ctx) {
 function update(){
   console.log("===========update==========");
   Sense_distance(ctx);
-
+var connection = new WebSocket('ws://192.168.1.179:1337');
   // var connection = new WebSocket('ws://192.168.0.100:1337');
-  var connection = new WebSocket('ws://192.168.1.179:1337');
+  // var connection = new WebSocket('ws://192.168.208.23:1337');
   connection.onopen = function () {
 
     var json = JSON.stringify(ultra_value);

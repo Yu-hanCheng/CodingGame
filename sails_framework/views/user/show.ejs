@@ -1,5 +1,12 @@
 <div class='container'>
-<h1><%- user.name %></h1>
-<h3>contact:<%- user.email %></h3>
+<h1><%= user.name %></h1>
+<% if(user.admin){ %>
+			<td><img src="/images/admin.png" width="40" height="40"></td>
+			<% }else{ %>
+			<td><img src="/images/user.png"  width="40" height="40"></td>
+		<% } %>
+<h3>contact:<%= user.email %></h3>
 <a class="btn btn-medium btn-promary" href="/user/edit/<%= user.id %>">Edit</a>
+<br>
+<a  href="/game" style="text-align:center" class="btn btn-lg btn-success">Enter game</a>
 </div>

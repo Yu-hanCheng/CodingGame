@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	schema:true,
+	// schema:true,
   attributes: {
   	name:{
   		type: 'string',
@@ -20,18 +20,48 @@ module.exports = {
   		required: true,
   		unique: true
   	},
-  	encrytedPassword:{
+  	encryptedPassword:{
   		type:'string'
   	},
-// toJSON: function(){
-//       var obj = this.toObject();
-//       delete obj.password;
-//       delete obj.confirmation;
-//       delete obj.encryptedPassword;
-//       delete obj._csrf;
-//       return obj;
-//     }
+    online: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    admin: {
+      type: 'boolean',
+      defaultsTo: false
+    },
 
+toJSON: function(){
+      var obj = this.toObject();
+      delete obj.password;
+      delete obj.confirmation;
+      delete obj.encryptedPassword;
+      delete obj._csrf;
+      return obj;
+    }
+  },
+  beforeValidate: function (values, next) {
+    console.log("beforeValidate");
+    if (typeof values.admin !== 'undefined') {
+      if (values.admin === 'unchecked') {
+        values.admin = false;
+      } else  if (values.admin[1] === 'on') {
+        values.admin = true;
+      }
+    }
+     next();
+  },
+  beforeCreate: function(values, next){
+    console.log("beforeCreate");
+    if(!values.password || values.password != values.confirmation){
+      return next({err:["Password doesn't match password confirmation."]});
+    }
+    require('bcrypt').hash(values.password, 10, function passwordEncrypted(err, encryptedPassword){
+      if (err) {return next(err);}
+      values.encryptedPassword =encryptedPassword;
+      next();
+    });
   }
 };
 

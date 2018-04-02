@@ -35,10 +35,16 @@ module.exports.routes = {
   '/': {
     view: 'default'//default//homepage
   },
-  '/user/game':{
-    view:'user/game'
+  '/game':{
+    view:'game'
   },
-  // or
+  '/game/maze_index':{
+    view:'game/maze_index'
+  },
+  // '/user/game':{
+  //   view:'user/game'
+  // },
+  // // or
   'user/new':{ 
     controller: "UserController",
     action:"new" //blueprint的action要設true才有用

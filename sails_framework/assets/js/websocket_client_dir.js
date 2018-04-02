@@ -15,6 +15,7 @@ function websocket_client(type) {
   window.WebSocket = window.WebSocket || window.MozWebSocket;
  
   var connection = new WebSocket('ws://192.168.1.179:1337');
+  // var connection = new WebSocket('ws://192.168.208.23:1337');
   // var connection = new WebSocket('ws://192.168.0.100:1337');
   // var connection = new WebSocket('ws://192.168.43.180:1337');
   // var connection = new WebSocket('ws://192.168.208.101:1337');

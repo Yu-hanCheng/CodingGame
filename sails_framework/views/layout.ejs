@@ -30,11 +30,59 @@
 
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/bootstrap.css">
+    <link rel="stylesheet" href="/styles/flexbox.css">
     <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/maze.css">
     <!--STYLES END-->
+
   </head>
 
   <body>
+
+  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"> CodingGame</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <% if (session.authenticated) { console.log("In layout"+JSON.stringify(session));%>
+            <li class="active"><a href="/user/show/<%= session.User.id %>"><%= session.User.name %> </a> </li>
+            <% } %>
+            <% if (session.authenticated && session.User.admin) { %>
+            <li><a href="/user">User Administration</a></li>
+            <li><a href="#">Placeholder2</a></li>
+            <% } %>
+        </ul>
+        <div class="navbar-right">
+            <% if (session.authenticated) { %>
+            <a class="btn btn-default navbar-btn navbar-right" href="/session/destroy">sign-out</a>
+            <% } %>
+
+        </div>
+        <% if (!session.authenticated) { %>
+        <form class="navbar-form navbar-right" action="/session/create">
+            <div class="form-group">
+                <input type="text" placeholder="Email" name="email" class="form-control" id="email_navy">
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password" name="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success"  >Sign in</button>
+            <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+        </form>
+        <% } %>
+    </div>
+  </div>
+  </div>
+<% block('localScripts', '<script src="/view_specific/user_index_misc.js"></script>') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <%- body %>
 
 
@@ -89,10 +137,16 @@
     -->
 
     <!--SCRIPTS-->
+    <script src="/js/dependencies/jquery-3.3.1.min.js"></script>
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/customVaildate.js"></script>
+    <script src="/js/app.js"></script>
     <script src="/js/car.js"></script>
+    <script src="/js/easytimer.min.js"></script>
     <script src="/js/require.js"></script>
     <script src="/js/websocket_client_dir.js"></script>
     <!--SCRIPTS END-->
+     <%- blocks.localScripts %>
+
   </body>
 </html>
