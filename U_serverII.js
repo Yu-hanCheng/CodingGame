@@ -105,7 +105,7 @@ wsServer.on('request', function(request) {
       });
     const child = require('child_process').exec;
     // var cmdString = 'pkill -f newcode; gcc -g newcode.c IPCServer.c -o newcode; nice -n 39 ./newcode ;';
-    var cmdString = 'pkill -f ser2; gcc -g newcode.c usercode.c IPCServer.c -o ser2; pm2 start ser2 ;';
+    var cmdString = 'pkill -f ser2; gcc -g newcode.c usercode.c IPCServer.c -o ser2; ./ser2 ;';
     child(cmdString, (err, stdout, stderr) => {
       console.log(stdout);
 

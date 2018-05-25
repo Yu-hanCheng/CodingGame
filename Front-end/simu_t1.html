@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script  src="../Front-end/websocket_client_dir.js"></script>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Generating JavaScript</title>
+  <style>
+
+    #wrap {
+       width:1500px;
+       margin:0 auto;
+    }
+  </style>
+  <!-- <link rel="stylesheet" href="buttons.css"> -->
+  <style>
+   #input { border-radius:2px; border:1px solid #ccc;
+        margin-top:10px; padding:5px; width:400px;
+      }
+  </style>
+</head>
+<body >
+    <div>
+      <input type="text" id="input" />
+      <button onclick="websocket_client(0)">Save Destination</button>
+    </div>
+
+  <div id="wrap">
+  <div id="blocklyDiv" style="height: 40px; width: 70px; color: orange;"></div>
+    <canvas id="myCanvas" width="1000" height="400"  ></canvas>
+    <script type="text/javascript">
+    var ctx = document.getElementById("myCanvas").getContext('2d');
+      
+      
+    
+    </script>
+    <script  src="../Front-end/car.js">
+      
+    </script>
+    
+ 
+   
+  </div>
+  <div>
+      <textarea type="text" id="input_code" rows="20" cols="100"></textarea>
+      <button onclick="websocket_client(1)">Save code</button>
+    </div>
+  
+</body>
+</html>
